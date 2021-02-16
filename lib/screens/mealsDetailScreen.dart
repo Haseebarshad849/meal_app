@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import '../models/dummyCategories.dart';
 
 class MealDetailScreen extends StatelessWidget {
+  static const routeName = '/meal-detail';
+  final Function toggleFavorite;
+  final Function isFavorite;
+
+  const MealDetailScreen(this.toggleFavorite,this.isFavorite);
+
+
+
   Widget buildSectionTitle(BuildContext context, String text) {
     return Padding(
       padding: EdgeInsets.only(top: 12.0),
@@ -25,6 +33,7 @@ class MealDetailScreen extends StatelessWidget {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     final mealId = ModalRoute.of(context).settings.arguments;
@@ -33,6 +42,13 @@ class MealDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('${selectedMeal.title}'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          isFavorite(mealId)? Icons.favorite: Icons.favorite_outline
+        ),
+        tooltip: 'Add to Favorites',
+        onPressed:()=> toggleFavorite(mealId),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -82,6 +98,7 @@ class MealDetailScreen extends StatelessWidget {
               child: buildContainerDecoration(
                   context,
                   ListView.builder(
+                    itemCount: selectedMeal.steps.length,
                     itemBuilder: (ctx, index) => Column(
                       children: [ ListTile(
                         leading: CircleAvatar(
@@ -92,7 +109,6 @@ class MealDetailScreen extends StatelessWidget {
                       Divider(),
                       ]
                     ),
-                    itemCount: selectedMeal.steps.length,
                   )),
             ),
           ],

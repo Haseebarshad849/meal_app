@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:meal_app_like_foodpanda/models/dummyCategories.dart';
 import 'package:meal_app_like_foodpanda/shared_Code/mealItems.dart';
 
-class CategoryMeals extends StatelessWidget {
-  // final String id;
-  // final String title;
-  //
-  // CategoryMeals({this.id, this.title});
+class CategoryMeals extends StatefulWidget {
+  final List availableMeals;
 
+  static const routeName = '/category-meals';
+
+  const CategoryMeals(this.availableMeals);
+
+  @override
+  _CategoryMealsState createState() => _CategoryMealsState();
+}
+
+class _CategoryMealsState extends State<CategoryMeals> {
   @override
   Widget build(BuildContext context) {
     final routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, String>;
     final categoryTitle = routeArgs['title'];
     final categoryId = routeArgs['id'];
-    final categoryMeal = DUMMY_MEALS.where((meal) {
+    final categoryMeal = widget.availableMeals.where((meal) {
       return meal.categories.contains(categoryId);
     }).toList();
 
